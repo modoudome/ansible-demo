@@ -1,0 +1,58 @@
+- { name : "Ajout d'utilitaire de surveillance et de protection",
+    hosts : servers,
+    become_method : sudo,
+    tasks : [
+        { name : "Installation de Fail2ban",
+      	  apt : "name=fail2ban"
+	},
+	{ name : "Redemarrage de fail2ban",
+	  shell : "/etc/init.d/fail2ban restart"
+	},
+	{ name : "Installation de Portsentry",
+	  apt : "name=portsentry"
+	},
+	{ name : "Ajout IP 192.168.42.42",
+	  shell : "echo '192.168.42.42' >> /etc/portsentry/portsentry.ignore.static"
+	  },
+	  { name : "Redemarrage de Portsentry",
+	    shell : "/etc/init.d/portsentry restart"
+	  },
+	  { name : "Changement des modes (ports)",
+	    shell : "echo 'TCP_MODE=\"atcp\"\nUDP_MODE=\"audp\"\n' > /etc/default/portsentry"
+	  },
+#	  { name : "Configuration"
+#	  
+#	  },
+	  { name : "Redemarrage de Portsentry",
+	    shell : "/etc/init.d/portsentry restart"
+	  },
+	  { name : "Verification du redemarrage correct de Portsentry",
+	    shell : "tail -n 5 /var/log/syslog"
+	  },
+	  { name : "Installation de Rkhunter",
+	    apt : "name=rkhunter"
+	  },
+	  { name : "Copy de rkhunter.conf vers rkhunter.conf.back",
+	    copy : "src=/etc/rkhunter.conf dest=/etc/rkhunter.conf.back"
+	  },
+	  { name : "Mise a jour de la base d'empreinte avec Rkhunter",
+	    shell : "rkhunter --propupd"
+	  },
+#	  { name : "Mise a de la version de Rkhunter",
+#	    shell : "rkhunter --update"
+#	  },
+#	  { name : "Verification de la version de Rkhunter",
+#	    shell : "rkhunter --versioncheck"
+#	  },
+#	  { name : "Scan du systeme",
+#	    shell : "rkhunter --checkall"
+#	  },
+	  { name : "Installation de Postfix (Envoi et Reception Email)",
+	    apt : "name=postfix"
+	  },
+	  { name : "Intallation de LogWatch pour la lecture des log",
+	    apt : "name=logwatch"
+	  }
+    ]
+  
+}

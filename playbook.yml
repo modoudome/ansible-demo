@@ -1,0 +1,21 @@
+- { name : "Desactivation des services de portmap (rcpbind)",
+hosts : servers,
+become_method: sudo,
+tasks : [
+      {
+      name : "stop de portman",
+      shell : "/etc/init.d/nfs-kernel-server stop" 
+      #notify : "restart rpcbind update_cache=yes" 
+      }
+]
+#handlers : [
+#{ name : "desactiver portman",
+#  service : "name=rcpbind state=stopped"
+#}
+#]
+} 
+#- hosts : servers 
+# become_method: sudo
+# handlers:
+#  - name: Desactiver portman
+#  - service: name=rpcbind state=stopped

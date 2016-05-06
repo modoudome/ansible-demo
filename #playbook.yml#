@@ -1,0 +1,7 @@
+
+      { name : Desactivation des services de portmap (rcpbind) } 
+ - hosts : servers
+# become_method: sudo
+# handlers:
+#  - name: Desactiver portman
+#  - service: name=rcpbind state=stopped

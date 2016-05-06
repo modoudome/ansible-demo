@@ -1,0 +1,22 @@
+
+- { name : "Gestion des conf reseaux",
+    hosts : servers,
+    become_method : sudo,
+    tasks : [
+    	  { name : "Desactivation de IPV6",
+	    script : "/etc/ansible/ipv6.sh"
+	  },
+	  { name : "Redemarrage des interfaces reseaux",
+	    service : "name=networking state=restarted"
+	  },
+	  { name : "Installation de IPtable",
+	    apt : "name=iptables"
+	  },
+	  { name : "Desactivation de certains installeurs (curl, wget, git, ...)",
+	    apt : "pkg={{ item }} state=present",
+	    with_items : ["curl", "bash-completion", "git", "nmap", "tree",
+	    	       	   "wget", "lynx", "youtube-dl", "mc", "iftop","fuse"]
+	  }
+    ]
+
+}
